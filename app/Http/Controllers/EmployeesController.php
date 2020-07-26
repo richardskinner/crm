@@ -16,9 +16,9 @@ class EmployeesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with('company')->paginate(10);
+        $employees = Employee::with('company')->search($request->query('q'))->paginate(10);
         return view('employee.index', ['employees' => $employees]);
     }
 
