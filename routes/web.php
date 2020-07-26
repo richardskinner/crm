@@ -23,6 +23,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::middleware(['auth:admin', 'verified'])->group(function () {
         Route::get('home', 'HomeController@index');
         Route::resource('companies', CompaniesController::class);
-        Route::resource('employeess', EmployeesController::class);
+        Route::resource('employees', EmployeesController::class);
     });
 });

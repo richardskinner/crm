@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Domain;
+use App\Rules\UKPhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CompanyUpdateRequest extends FormRequest
+class EmployeeUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,11 @@ class CompanyUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|alpha_num_spaces',
+            'company_id' => 'required|integer',
+            'first_name' => 'required|alpha',
+            'last_name' => 'required|alpha',
+            'phone' => [new UKPhoneNumber()],
             'email' => 'email',
-            'website' => [new Domain()],
-            'logo' => 'image:jpeg,png,gif,svg|dimensions:min_width=100,min_width=100'
         ];
     }
 }

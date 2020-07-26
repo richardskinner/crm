@@ -34,6 +34,7 @@
         <div class="col-12">
             <form action="{{ route('companies.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="_method" value="PUT">
                 <div class="form-group">
                     <label for="companyName">Name</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') ?? $company->name }}">

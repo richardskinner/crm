@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use App\Employee;
+use App\Http\Requests\EmployeeStoreRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EmployeesController extends Controller
 {
@@ -13,7 +18,8 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::with('company')->paginate(10);
+        return view('employee.index', ['employees' => $employees]);
     }
 
     /**
@@ -23,7 +29,8 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        //
+        $companies = Company::all();
+        return view('employee.create', ['companies' => $companies]);
     }
 
     /**
@@ -32,9 +39,23 @@ class EmployeesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmployeeStoreRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+
+            Employee::create([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'company_id' => $validated['company_id'],
+            ]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->withErrors(['error' => $exception->getMessage()]);
+        }
+
+        return redirect()->back()->with('success', "Employee {$validated['first_name']} {$validated['last_name']} Added Successfully.");
     }
 
     /**
@@ -56,7 +77,12 @@ class EmployeesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $companies = Company::all();
+        $employees = Employee::with('company')->find($id);
+        return view('employee.edit', [
+            'companies' => $companies,
+            'employee' => $employees
+        ]);
     }
 
     /**
@@ -66,9 +92,23 @@ class EmployeesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeUpdateRequest $request, $id)
     {
-        //
+        try {
+            $validated = $request->validated();
+
+            Employee::where('id', $id)->update([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'],
+                'phone' => $validated['phone'],
+                'company_id' => $validated['company_id'],
+            ]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->withErrors(['error' => $exception->getMessage()]);
+        }
+
+        return redirect()->back()->with('success', "Employee {$validated['first_name']} {$validated['last_name']} Updated Successfully.");
     }
 
     /**
