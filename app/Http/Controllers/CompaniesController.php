@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CompaniesController extends Controller
 {
@@ -15,7 +18,8 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        //
+        $companies = Company::paginate(10);
+        return view('company.index', compact('companies'));
     }
 
     /**
@@ -25,7 +29,7 @@ class CompaniesController extends Controller
      */
     public function create()
     {
-        //
+        return view('company.create');
     }
 
     /**
@@ -36,7 +40,21 @@ class CompaniesController extends Controller
      */
     public function store(CompanyStoreRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+            $image = Storage::putFile('public', $validated['logo']);
+
+            Company::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'website' => $validated['website'],
+                'logo' => $image,
+            ]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->withErrors(['error' => $exception->getMessage()]);
+        }
+
+        return redirect()->back()->with('success', "Company {$validated['name']} Added Successfully.");
     }
 
     /**
@@ -58,7 +76,8 @@ class CompaniesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $company = Company::find($id)->first();
+        return view('company.edit', compact('company'));
     }
 
     /**
@@ -70,7 +89,21 @@ class CompaniesController extends Controller
      */
     public function update(CompanyUpdateRequest $request, $id)
     {
-        //
+        try {
+            $validated = $request->validated();
+            $image = Storage::putFile('public', $validated['logo']);
+
+            Company::where('id', $id)->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'website' => $validated['website'],
+                'logo' => $image,
+            ]);
+        } catch (\Exception $exception) {
+            return redirect()->back()->withErrors(['error' => $exception->getMessage()]);
+        }
+
+        return redirect()->back()->with('success', "Company {$validated['name']} Updated Successfully.");
     }
 
     /**

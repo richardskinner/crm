@@ -20,7 +20,6 @@ services:
       - code-network
   mysql:
     image: mysql:latest
-    container_name: db
     restart: unless-stopped
     tty: true
     ports:

@@ -214,7 +214,7 @@ return [
     |
     */
 
-    'enabled_laravel_mix' => false,
+    'enabled_laravel_mix' => true,
     'laravel_mix_css_path' => 'css/app.css',
     'laravel_mix_js_path' => 'js/app.js',
 
@@ -242,10 +242,17 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
+            'text'        => 'Companies',
+            'url'         => 'admin/companies',
+            'icon'        => 'far fa-fw  fa-building',
+//            'label'       => 4,
+            'label_color' => 'success',
+        ],
+        [
+            'text'        => 'Employees',
+            'url'         => 'admin/employees',
+            'icon'        => 'far fa-fw fa-user',
+//            'label'       => 4,
             'label_color' => 'success',
         ],
         ['header' => 'account_settings'],

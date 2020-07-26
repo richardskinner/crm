@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Domain;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyUpdateRequest extends FormRequest
@@ -13,7 +14,7 @@ class CompanyUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,10 @@ class CompanyUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'alpha_num_spaces',
+            'email' => 'email',
+            'website' => [new Domain()],
+            'logo' => 'image:jpeg,png,gif,svg|dimensions:min_width=100,min_width=100'
         ];
     }
 }
