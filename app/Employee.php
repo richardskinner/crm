@@ -20,7 +20,14 @@ class Employee extends Model
             return $query;
         }
 
-        return $query->orWhere('first_name', '=', $term)->orWhere('last_name', '=', $term);
+        return $query
+            ->orWhere('first_name', 'LIKE', "%{$term}%")
+            ->orWhere('last_name', 'LIKE', "%{$term}%")
+            ->orWhere('email', 'LIKE', "%{$term}%")
+            ->orWhere('phone', 'LIKE', "%{$term}%")
+            ->orWhereHas('company', function ($q) use($term) {
+                $q->where('name', 'LIKE', "%{$term}%");
+            });
     }
 
     public function company()

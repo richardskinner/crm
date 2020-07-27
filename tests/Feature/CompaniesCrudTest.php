@@ -43,7 +43,7 @@ class CompaniesCrudTest extends TestCase
         $user = User::find(1);
         $this->actingAs($user);
 
-        $response = $this->get(route('companies.create'), []);
+        $response = $this->get(route('companies.create'));
 
         $response->assertStatus(200);
         $response->assertSee('Create new company.');
@@ -59,7 +59,7 @@ class CompaniesCrudTest extends TestCase
      *
      * @return void
      */
-    public function testStoreCompany()
+    public function testStoreCompanySuccess()
     {
         $user = User::find(1);
         $this->actingAs($user);
@@ -86,6 +86,37 @@ class CompaniesCrudTest extends TestCase
     }
 
     /**
+     * Test Update Employee Failure
+     *
+     * @return void
+     */
+    public function testStoreCompanyFailure()
+    {
+        $user = User::find(1);
+        $this->actingAs($user);
+
+        Storage::fake('local');
+
+        $file = UploadedFile::fake()->image('image.jpg', 90, 90);
+
+        $response = $this
+            ->from(route('companies.create'))
+            ->post(route('companies.store'), [
+                'name' => 'Gunpowder - Digital - Ltd',
+                'logo' => $file,
+                'email' => 'gunpowderdigital.com',
+                'website' => 'gunpowderdigital'
+            ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
+        $response->assertSessionHasErrors('name', 'The name field is required.');
+        $response->assertSessionHasErrors('email', 'The email field is required.');
+        $response->assertSessionHasErrors('website', 'The website is not a valid domain name.');
+        $response->assertSessionHasErrors('logo', 'The phone is not a valid UK phone number.');
+    }
+
+    /**
      * Test Edit Company
      *
      * @return void
@@ -102,7 +133,7 @@ class CompaniesCrudTest extends TestCase
         $response->assertViewHas('company');
     }
 
-    public function testUpdateCompany()
+    public function testUpdateCompanySuccess()
     {
         $user = User::find(1);
         $this->actingAs($user);
@@ -129,5 +160,36 @@ class CompaniesCrudTest extends TestCase
             'email' => 'info@gunpowderdigital.com'
         ]);
         $response->assertSee('Company Gunpowder Digital Ltd Updated Successfully.');
+    }
+
+    /**
+     * Test Update Employee Failure
+     *
+     * @return void
+     */
+    public function testUpdateCompanyFailure()
+    {
+        $user = User::find(1);
+        $this->be($user);
+
+        Storage::fake('local');
+
+        $file = UploadedFile::fake()->image('image.jpg', 90, 90);
+
+        $response = $this
+            ->from(route('companies.edit', ['company' => 1]))
+            ->put(route('companies.update', ['company' => 1]), [
+                'name' => 'Gunpowder - Digital - Ltd',
+                'logo' => $file,
+                'email' => 'gunpowderdigital.com',
+                'website' => 'gunpowderdigital'
+            ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors();
+        $response->assertSessionHasErrors('name', 'The name field is required.');
+        $response->assertSessionHasErrors('email', 'The email field is required.');
+        $response->assertSessionHasErrors('website', 'The website is not a valid domain name.');
+        $response->assertSessionHasErrors('logo', 'The phone is not a valid UK phone number.');
     }
 }

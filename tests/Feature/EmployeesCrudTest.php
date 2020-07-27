@@ -49,7 +49,7 @@ class EmployeesCrudTest extends TestCase
         $response->assertSee('last_name');
         $response->assertSee('phone');
         $response->assertSee('email');
-        $response->assertSee('compnay_id');
+        $response->assertSee('company_id');
 
     }
 
@@ -173,8 +173,8 @@ class EmployeesCrudTest extends TestCase
         $this->actingAs($user);
 
         $response = $this
-            ->from(route('employees.create'))
-            ->post(route('employees.store'), [
+            ->from(route('employees.edit', ['employee' => 1]))
+            ->put(route('employees.update', ['employee' => 1]), [
                 'first_name' => '12345',
                 'last_name' => '6789',
                 'email' => 'richard.skinner',

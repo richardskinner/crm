@@ -66,7 +66,8 @@ class EmployeesController extends Controller
      */
     public function show($id)
     {
-        //
+        $employee = Employee::find($id)->first();
+        return view('employee.show', compact('employee'));
     }
 
     /**
@@ -119,6 +120,8 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Employee::destroy($id);
+
+        return redirect(route('employees.index'))->with('success', 'Employee was deleted.');
     }
 }

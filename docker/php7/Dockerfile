@@ -20,11 +20,13 @@ RUN docker-php-ext-enable xdebug pcntl redis
 
 RUN docker-php-ext-configure intl
 
+# GD Install
 RUN docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp
 RUN cd /usr/src/php/ext/gd && make
 RUN cp /usr/src/php/ext/gd/modules/gd.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/gd.so
 RUN docker-php-ext-install -j$(nproc) gd
 
+# Composer Install
 RUN curl -o /tmp/composer-setup.php https://getcomposer.org/installer \
 && curl -o /tmp/composer-setup.sig https://composer.github.io/installer.sig \
 # Make sure we're installing what we think we're installing!

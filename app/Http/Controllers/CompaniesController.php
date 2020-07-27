@@ -16,9 +16,9 @@ class CompaniesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $companies = Company::paginate(10);
+        $companies = Company::search($request->query('q'))->paginate(10);
         return view('company.index', compact('companies'));
     }
 
@@ -65,7 +65,8 @@ class CompaniesController extends Controller
      */
     public function show($id)
     {
-        //
+        $company = Company::find($id)->first();
+        return view('company.show', compact('company'));
     }
 
     /**
@@ -114,6 +115,8 @@ class CompaniesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Company::destroy($id);
+
+        return redirect(route('companies.index'))->with('success', 'Company Deleted.');
     }
 }

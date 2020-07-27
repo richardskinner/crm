@@ -19,6 +19,13 @@
 @stop
 
 @section('content')
+    @if(session()->has('success'))
+        <div class="row">
+            <div class="col-12">
+                <x-alert type="success" :message="session()->get('success')"></x-alert>
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="col-12">
             <section>
@@ -37,8 +44,8 @@
                     @isset($employees)
                         @foreach($employees as $employee)
                             <tr>
-                                <td>{{ $employee->first_name }}</td>
-                                <td>{{ $employee->last_name }}</td>
+                                <td><a href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->first_name }}</a></td>
+                                <td><a href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->last_name }}</a></td>
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->phone }}</td>
                                 <td>{{ $employee->company->name }}</td>

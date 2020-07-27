@@ -11,6 +11,6 @@ $factory->define(\App\Company::class, function (Faker $faker) {
         'name' => $faker->company,
         'email' => $faker->companyEmail,
         'website' => $faker->domainName,
-        'logo' => "public/{$imageName}",
+        'logo' => "storage/{$imageName}",
     ];
 });
