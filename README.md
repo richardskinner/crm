@@ -23,7 +23,7 @@ Uses PHPUnit
 
 Login into the docker container using
 
-`docker exec -it cyber-duck-crm_php_1 bash`
+`docker exec -it crm_php_1 bash`
 
 Then run 
 
