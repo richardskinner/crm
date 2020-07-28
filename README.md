@@ -42,6 +42,12 @@ DB_USERNAME=root
 DB_PASSWORD=password
 ```
 
+Setup Database
+
+```
+php artisan storage:link && php artisan migrate:refresh --seed
+```
+
 ## Testing
 
 Uses PHPUnit
