@@ -27,6 +27,21 @@ username: admin@admin.com
 password: password
 ```
 
+## Setup
+
+### Database
+
+Add to your .env
+
+```
+DB_CONNECTION=mysql
+DB_HOST=crm_mysql_1
+DB_PORT=3306
+DB_DATABASE=crm
+DB_USERNAME=root
+DB_PASSWORD=password
+```
+
 ## Testing
 
 Uses PHPUnit
