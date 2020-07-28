@@ -6,6 +6,16 @@ Create Docker Instance and Dependencies
 
 `docker-compose up -d`
 
+Install Dependencies
+
+```
+docker exec -it crm_php_1 bash
+composer install
+npm install
+npm run dev
+```
+
+
 You can access the site using
 
 `htpp://127.0.0.1:8080/login`
@@ -27,4 +37,4 @@ Login into the docker container using
 
 Then run 
 
-`./vendor/binphpunit`
+`./vendor/bin/phpunit`
